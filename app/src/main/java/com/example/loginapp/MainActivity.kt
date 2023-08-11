@@ -6,6 +6,7 @@ import android.util.Patterns
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
+    private lateinit var progressBar: ProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,9 +28,11 @@ class MainActivity : AppCompatActivity() {
         auth = Firebase.auth
         emailEditText = findViewById(R.id.emailEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
+        progressBar=findViewById(R.id.progressBar)
 
         val loginButton: Button = findViewById(R.id.loginButton)
         loginButton.setOnClickListener {
+            progressBar.visibility=View.VISIBLE
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
@@ -37,6 +41,7 @@ class MainActivity : AppCompatActivity() {
                 // If authentication is successful, navigate to the next screen
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this) { task ->
+                        progressBar.visibility=View.GONE
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(this,"SignIn Successful!", LENGTH_SHORT).show()

@@ -3,10 +3,13 @@ package com.example.loginapp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -15,6 +18,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,16 +27,19 @@ class SignUpActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.emailEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
         auth= Firebase.auth
+        progressBar=findViewById(R.id.progressBar)
 
         val signUpButton: Button = findViewById(R.id.signUpButton)
         signUpButton.setOnClickListener {
             // Handle sign up logic here
+            progressBar.visibility= View.VISIBLE
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             if (isEmailValid(email) && isPasswordValid(password)) {
                 // Perform user registration
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this) { task ->
+                        progressBar.visibility=View.GONE
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(this,"Registration Successful! Go to Login", Toast.LENGTH_SHORT).show()
