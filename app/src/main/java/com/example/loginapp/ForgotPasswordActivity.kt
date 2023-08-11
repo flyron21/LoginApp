@@ -25,42 +25,46 @@ class ForgotPasswordActivity : AppCompatActivity() {
         setContentView(R.layout.activity_forgot_password)
 
         emailEditText = findViewById(R.id.emailEditText)
-        auth= Firebase.auth
-        progressBar=findViewById(R.id.progressBar)
+        auth = Firebase.auth
+        progressBar = findViewById(R.id.progressBar)
 
         resetPasswordButton = findViewById(R.id.resetPasswordButton)
         resetPasswordButton.setOnClickListener {
             // Handle forgot password logic here
-            progressBar.visibility= View.VISIBLE
+            progressBar.visibility = View.VISIBLE
             val email = emailEditText.text.toString()
             if (isEmailValid(email)) {
                 // Send password reset email
                 auth.sendPasswordResetEmail(email)
                     .addOnCompleteListener { task ->
-                        progressBar.visibility= View.GONE
+                        progressBar.visibility = View.GONE
                         if (task.isSuccessful) {
                             // Password reset email sent successfully
                             // You can show a success message to the user
-                            Toast.makeText(this,"Check your email and then go to login",LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                "Check your email and then go to login",
+                                LENGTH_SHORT
+                            ).show()
                         } else {
                             // Password reset email failed
                             // You can show an error message to the user
-                            Toast.makeText(this,"Process failed. Try again!",LENGTH_SHORT).show()
+                            Toast.makeText(this, "Process failed. Try again!", LENGTH_SHORT).show()
                         }
                     }
 
 
-
-            }
-            else {
+            } else {
                 // Show error messages for invalid email or password
                 emailEditText.error = "Invalid email address"
             }
         }
     }
+
     private fun isEmailValid(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
+
     override fun onStop() {
         super.onStop()
 

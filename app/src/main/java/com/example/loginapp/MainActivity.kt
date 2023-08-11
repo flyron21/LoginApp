@@ -28,11 +28,11 @@ class MainActivity : AppCompatActivity() {
         auth = Firebase.auth
         emailEditText = findViewById(R.id.emailEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
-        progressBar=findViewById(R.id.progressBar)
+        progressBar = findViewById(R.id.progressBar)
 
         val loginButton: Button = findViewById(R.id.loginButton)
         loginButton.setOnClickListener {
-            progressBar.visibility=View.VISIBLE
+            progressBar.visibility = View.VISIBLE
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
@@ -41,22 +41,37 @@ class MainActivity : AppCompatActivity() {
                 // If authentication is successful, navigate to the next screen
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this) { task ->
-                        progressBar.visibility=View.GONE
+                        progressBar.visibility = View.GONE
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(this,"SignIn Successful!", LENGTH_SHORT).show()
                             val user = auth.currentUser
-                            val intent= Intent(this,HomeActivity::class.java)
-                            intent.putExtra("emailID",email)
-                            startActivity(intent)
-                        }
-                        else {
+                            if (user != null && user.isEmailVerified) {
+                                // User is authenticated and email is verified
+                                // Proceed to the app's main activity
+                                Toast.makeText(this, "SignIn Successful!", LENGTH_SHORT).show()
+                                val intent = Intent(this, HomeActivity::class.java)
+                                intent.putExtra("emailID", email)
+                                startActivity(intent)
+                            } else {
+                                // User is authenticated but email is not verified
+                                // You can show a message asking the user to verify their email
+                                Toast.makeText(
+                                    this,
+                                    "Please verify your email first!",
+                                    LENGTH_SHORT
+                                ).show()
+
+                            }
+
+                        } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(baseContext, "Authentication failed. Retry!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                baseContext,
+                                "Authentication failed. Retry!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
-
-
 
 
             } else {
@@ -65,7 +80,8 @@ class MainActivity : AppCompatActivity() {
                     emailEditText.error = "Invalid email address"
                 }
                 if (!isPasswordValid(password)) {
-                    passwordEditText.error = "Password must contain at least 6 characters including a numeral"
+                    passwordEditText.error =
+                        "Password must contain at least 6 characters including a numeral"
                 }
             }
 
@@ -90,6 +106,7 @@ class MainActivity : AppCompatActivity() {
         val regex = "^(?=.*\\d)(?=.*[a-zA-Z]).{6,}\$"
         return password.matches(Regex(regex))
     }
+
     override fun onRestart() {
         super.onRestart()
 

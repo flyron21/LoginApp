@@ -18,9 +18,9 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val receivedData=intent.getStringExtra("emailID").toString()
-        tvHomeGreet=findViewById(R.id.tvHomeGreet)
-        btnHomeLogout=findViewById(R.id.btnHomeLogout)
+        val receivedData = intent.getStringExtra("emailID").toString()
+        tvHomeGreet = findViewById(R.id.tvHomeGreet)
+        btnHomeLogout = findViewById(R.id.btnHomeLogout)
         tvHomeGreet.text = receivedData
         btnHomeLogout.setOnClickListener {
 
