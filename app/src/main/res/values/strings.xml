@@ -8,4 +8,7 @@
     <string name="hello_there">Hello there!</string>
     <string name="user">user</string>
     <string name="log_out">Log Out</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="password_">Password</string>
 </resources>

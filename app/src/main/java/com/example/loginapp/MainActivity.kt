@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                             Toast.makeText(
                                 baseContext,
                                 "Authentication failed. Retry!",
-                                Toast.LENGTH_SHORT
+                                LENGTH_SHORT
                             ).show()
                         }
                     }
