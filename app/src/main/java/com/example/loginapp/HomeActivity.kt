@@ -30,13 +30,7 @@ class HomeActivity : AppCompatActivity() {
             finish()
         }
     }
-    override fun onStop() {
-        super.onStop()
 
-        // Your code to handle what happens when the activity enters the onStop state
-        // For example, you might release resources or pause ongoing tasks.
-        finish()
-    }
 }
 
 
